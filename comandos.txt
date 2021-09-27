@@ -1,0 +1,11 @@
+npm install -g express-generator
+express --view=ejs myapp
+
+   change directory:
+     > cd myapp
+
+   install dependencies:
+     > npm install
+
+   run the app:
+     > SET DEBUG=myapp:* & npm start
