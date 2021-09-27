@@ -12,7 +12,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '9903');
 app.set('port', port);
 
 /**
@@ -28,6 +28,36 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+
+//Eureka
+const Eureka = require('eureka-js-client').Eureka;
+
+const client = new Eureka({
+  // application instance information
+  instance: {
+    app: 'contactApi',
+    hostName: '192.168.0.211',
+    ipAddr: '192.168.0.211',
+    statusPageUrl: 'http://localhost:9903/',
+    port: {
+      '$': 9903,
+      '@enabled': true,
+    },
+    vipAddress: 'dw-gateway',
+    dataCenterInfo: {
+      '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
+      name: 'MyOwn',
+    },
+  },
+  eureka: {
+    // eureka server host / port
+    host: 'localhost',
+    port: 9901,
+    servicePath: '/eureka/apps/',
+  },
+});
+client.start();
 
 /**
  * Normalize a port into a number, string, or false.
